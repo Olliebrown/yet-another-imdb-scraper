@@ -49,7 +49,13 @@ const BASE_URL = "https://www.imdb.com";
  * director|directors,genre,poster,episodes,seasons,related
  */
 function scrapper(id) {
-  return request(`${BASE_URL}/title/${id}/?ref_=nv_sr_1`)
+  var options = '';
+  if ('object' == typeof id) {
+    options = id;
+  } else {
+    options = `${BASE_URL}/title/${id}/?ref_=nv_sr_1`;
+  }
+  return request(options)
     .then(data => {
       const $ = cheerio.load(data);
 
