@@ -1,5 +1,5 @@
 /**
- * getEpisodes - create the episode array from html string pased by request
+ * getEpisodes - create the episode array from html string passed by request
  *
  * @param {Object} $ html string loaded by cheerio
  *
@@ -10,27 +10,27 @@
  *                                                   airDate of the episode
  *                                                   rating of episode
  */
-function getEpisodes($) {
-  const episodes = [];
+export function getEpisodes ($) {
+  const episodes = []
 
-  $(".eplist > .list_item").each(function(i) {
+  $('.eplist > .list_item').each(function (i) {
     const story = $(
       `.eplist > div:nth-child(${i + 1}) > .info > .item_description`
     )
       .text()
-      .trim();
+      .trim()
     const posterElement = $(
       `div.list_item:nth-child(${i +
         1}) > div:nth-child(1) > a:nth-child(1) > div:nth-child(1) > img:nth-child(1)`
-    )[0];
+    )[0]
     episodes.push({
       poster: posterElement
-        ? posterElement.attribs.src.split("@._")[0] + "@._V1_QL50.jpg"
+        ? posterElement.attribs.src.split('@._')[0] + '@._V1_QL50.jpg'
         : null,
       name: $(
         `.eplist > div:nth-child(${i + 1}) > div.info > strong > a`
       ).text(),
-      story: story.includes("about?") ? "N/A" : story,
+      story: story.includes('about?') ? 'N/A' : story,
       airDate: $(`.eplist > div:nth-child(${i + 1}) > .info > .airdate`)
         .text()
         .trim(),
@@ -40,10 +40,8 @@ function getEpisodes($) {
       )
         .text()
         .trim()
-    });
-  });
+    })
+  })
 
-  return { episodes };
+  return { episodes }
 }
-
-module.exports = { getEpisodes };

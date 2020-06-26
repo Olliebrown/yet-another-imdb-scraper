@@ -2,23 +2,23 @@
  * getAwards - get award of each type
  *
  * @param {Integer} n position of award function
- * @param {Integer} f postion of award type
+ * @param {Integer} f position of award type
  * @param {Integer} $ loaded cheerio html string
  *
  * @returns {Object} the key are category,wonBy
  */
-function getAwards(n, f, $) {
-  const k = n === 1 ? 2 : 1;
+export function getAwards (n, f, $) {
+  const k = n === 1 ? 2 : 1
   const position = $(
     `table.awards:nth-child(${f}) > tbody:nth-child(1) > tr:nth-child(${n}) > td:nth-child(${k})`
-  ).text();
+  ).text()
   var refactor = position
-    .split("\n")
-    .join("")
-    .split("  ");
-  const category = refactor[6].trim();
-  const wonBy = refactor[10].trim();
-  return { category, wonBy };
+    .split('\n')
+    .join('')
+    .split('  ')
+  const category = refactor[6].trim()
+  const wonBy = refactor[10].trim()
+  return { category, wonBy }
 }
 
 /**
@@ -29,43 +29,41 @@ function getAwards(n, f, $) {
  *
  * @returns {Object} contains category name
  */
-function getAwardCategory(n, $) {
+export function getAwardCategory (n, $) {
   // table.awards:nth-child(n) > tbody:nth-child(1) > tr:nth-child(1) > td:nth-child(1) > span:nth-child(3)
   const position = $(
     `table.awards:nth-child(${n}) > tbody:nth-child(1) > tr:nth-child(1) > td:nth-child(1) > span:nth-child(3)`
   )
     .text()
-    .trim();
-  return position;
+    .trim()
+  return position
 }
 
 /**
  * getWinner - get the name of the winner person
  *
- * @param {Number} k postion of the winner
+ * @param {Number} k position of the winner
  * @param {Object} $ cheerio loaded html string
  *
  * @returns {Object} uses all the above function and get award winner
  */
-function getWinner(k, $) {
-  var type = getAwardCategory(k, $).trim();
-  let award = { name: type, winner: [] };
+export function getWinner (k, $) {
+  var type = getAwardCategory(k, $).trim()
+  const award = { name: type, winner: [] }
   try {
     var loop = $(
       `table.awards:nth-child(${k}) > tbody:nth-child(1) > tr:nth-child(1) > td:nth-child(1)`
-    )[0].attribs.rowspan;
+    )[0].attribs.rowspan
   } catch (e) {}
   // table.awards:nth-child(7) > tbody:nth-child(1) > tr:nth-child(1) > td:nth-child(1)
-  var i = 1;
+  var i = 1
   while (loop--) {
     try {
-      award.winner.push(getAwards(i, k, $));
-      i++;
+      award.winner.push(getAwards(i, k, $))
+      i++
     } catch (e) {
-      i++;
+      i++
     }
   }
-  return award;
+  return award
 }
-
-module.exports = { getWinner };
